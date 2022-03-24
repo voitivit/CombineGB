@@ -24,8 +24,6 @@ center.removeObserver(observer)
 // Subscription
 example(of: "Subscription") {
     let arrayString = ["one", "two", "three", "four", "five"]
-    //let arraInt = ["1", "2", "3", "4", "5"]
-    
     let subscription: AnyCancellable =
     arrayString.publisher
         .map {$0.capitalized}
@@ -34,10 +32,6 @@ example(of: "Subscription") {
         }
     subscription.cancel()
 }
-
-
-
-
 
 // Just
 example(of: "Just") {
@@ -52,62 +46,28 @@ example(of: "Just") {
     just.eraseToAnyPublisher()
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-// Задание 2:
-//var cancellables: Array<AnyCancellable> = []
-example(of: "Subscription"){
-    let araay = [1,2,34,5,6,7,8,9]
-    let subscription: AnyCancellable =
-        araay.publisher
-        .map {$0 * 3}
-        .sink { value in
-            print("Значения изменились: \(value)")
+// Future
+var cancellables: Set<AnyCancellable> = []
+let banner = """
+          __,
+         (           o  /) _/_
+          `.  , , , ,  //  /
+        (___)(_(_/_(_ //_ (__
+                     /)
+                    (/
+        """
+example(of: "Future") {
+    let future = Future<String, Never> {promise in
+        DispatchQueue.global().asyncAfter(deadline: .now() + 5) {
+            promise(.success("Баннер Swift"))
         }
-    subscription.cancel()
-}
-*/
-
-
-
-
-
-
-
-/*var cancellables: Array<AnyCancellable> = []
-example(of: "Subscription"){
-    let arr = [1,2,3,4,5]
-    let subscription: AnyCancellable =
-    arr.publisher
-        .map{ ($0 * 2)/2 }
-        .sink { value in
-            print("Передаем данные массива: \(value)")
-        }
+    }
     
-}*/
-
-
-
-
-/* let myNotification = Notification.Name("myNotification")
- let publisher = NotificationCenter.default.publisher(for: myNotification, object: nil)
- 
- let center = NotificationCenter.default
- let observer = center.addObserver(forName: myNotification, object: nil, queue: nil) { _ in
-     print("FirstNotification")
- }
-     center.post(name: myNotification, object: nil)
-     center.removeObserver(observer)
- */
-
+    future
+        .sink {_ in
+            print(banner)
+        } receiveValue: { value in
+            print(value)
+        }
+        .store(in: &cancellables)
+}
