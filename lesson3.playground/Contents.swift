@@ -6,6 +6,8 @@ public func example(of description: String, action: () -> Void) { print("\n-----
 action()
 }
 
+
+
 var subscription: Set<AnyCancellable> = []
 //1 Создайте первый издатель, производный от Subject, который испускает строки.
 //2 Используйте .collect() со стратегией .byTime для группировки данных через каждые 0.5 секунд.
