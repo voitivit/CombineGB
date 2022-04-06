@@ -38,7 +38,7 @@ example(of: "Lesson3") {
     let nextPublisher = PassthroughSubject<String, Never>()
     nextPublisher
         .measureInterval(using: DispatchQueue.main)
-        .map{$0 < 0.9 ? "🤯" : " "}
+        .map{ $0 < 0.9 ? "🤯" : " "}
         .merge(with: firstPublisher)
         .sink{ value in print(value)}
         .store(in: &subscription)
