@@ -89,14 +89,18 @@ class API {
             .store(in: &cancellables)
     }
     
+  
     
     // Запрос Национальности
     func fetchNationalize() -> AnyPublisher<Nationalize, Never>{
+       
+
         let url = URL(string: baseUrlNationalize + name)!
         
         return URLSession.shared.dataTaskPublisher(for: url)
             .map{$0.data}
             .decode(type: Nationalize.self, decoder: JSONDecoder())
+            
             .replaceError(with: Nationalize.init(name: "", country: nil))
             .eraseToAnyPublisher()
     }
